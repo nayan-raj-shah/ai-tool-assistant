@@ -1,4 +1,5 @@
-export default async function ChatPage() {
+import ChatLayout from "@/components/chat/ChatLayout";
 
-    return <div>Chat UI goes here</div>;
+export default async function ChatPage() {
+    return <ChatLayout />;
 }
