@@ -9,7 +9,7 @@ export default async function proxy(req: NextRequest) {
         url = req.nextUrl.clone();
         url.pathname = "/chat";
     }
-    else if (!session && pathname !== "/login") {
+    else if (!session && pathname === "/chat") {
         url = req.nextUrl.clone();
         url.pathname = "/login";
     }

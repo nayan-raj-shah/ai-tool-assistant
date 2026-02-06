@@ -2,5 +2,5 @@
 import { signIn } from "@/lib/auth";
 
 export async function loginApiServer(provider: "google" | "github") {
-    await signIn(provider);
+    await signIn(provider, { callbackUrl: "/" });
 }
