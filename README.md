@@ -1,4 +1,4 @@
-# AI Chat Assistant
+# AI Tool Assistant
 
 AI-powered chat application with streaming responses and tool calling.
 
@@ -17,8 +17,8 @@ AI-powered chat application with streaming responses and tool calling.
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
-cd <project-folder>
+git clone https://github.com/nayan-raj-shah/ai-tool-assistant
+cd ai-tool-assistant
 
 2. Install dependencies
 npm install
@@ -36,10 +36,9 @@ GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 GITHUB_CLIENT_ID=your-github-client-id
 GITHUB_CLIENT_SECRET=your-github-client-secret
-# OR
+
+# GROQ AI
 GROQ_API_KEY=your-groq-key
-
-
 Only one AI provider key is required.
 
 🗄 Database Setup
