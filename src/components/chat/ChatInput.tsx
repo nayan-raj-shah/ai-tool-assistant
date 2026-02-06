@@ -3,61 +3,50 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 
-const chatInputSchema = z.object({
-    message: z
-        .string()
-        .min(1, "Message cannot be empty")
-        .max(2000, "Message is too long"),
+const schema = z.object({
+    message: z.string().min(1, "Message cannot be empty"),
 });
 
-type ChatInputValues = z.infer<typeof chatInputSchema>;
+type FormValues = z.infer<typeof schema>;
 
-export default function ChatInput() {
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors, isSubmitting },
-    } = useForm<ChatInputValues>({
-        resolver: zodResolver(chatInputSchema),
-        defaultValues: {
-            message: "",
-        },
+export default function ChatInput({
+    onSend,
+    isLoading,
+}: {
+    onSend: (message: string) => Promise<void>;
+    isLoading: boolean;
+}) {
+    const { register, handleSubmit, reset, getValues } = useForm<FormValues>({
+        resolver: zodResolver(schema),
+        defaultValues: { message: "" },
     });
 
-    function onSubmit(values: ChatInputValues) {
-        console.log("Send message:", values.message);
+    async function submit(values: FormValues) {
+        await onSend(values.message);
         reset();
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="border-t p-4">
+        <form onSubmit={handleSubmit(submit)} className="border-t p-4">
             <div className="flex gap-2 px-28">
-                <div className="flex-1">
-                    <Textarea
-                        {...register("message")}
-                        placeholder="Ask about weather, F1 races, or stocks..."
-                        rows={2}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter" && !e.shiftKey) {
-                                e.preventDefault();
-                                handleSubmit(onSubmit)();
-                            }
-                        }}
-                    />
+                <Textarea
+                    {...register("message")}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            submit({ message: getValues("message") });
+                        }
+                    }}
+                    disabled={isLoading}
+                    rows={2}
+                    placeholder="Ask something..."
+                />
 
-                    {errors.message && (
-                        <p className="mt-1 text-xs text-destructive">
-                            {errors.message.message}
-                        </p>
-                    )}
-                </div>
-
-                <Button type="submit" disabled={isSubmitting}>
+                <Button type="submit" disabled={isLoading}>
                     Send
                 </Button>
             </div>

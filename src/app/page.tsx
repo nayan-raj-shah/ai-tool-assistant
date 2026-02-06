@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 export default function LandingPage() {
   return (
     <main className="min-h-screen bg-linear-to-b from-background to-muted">
-      {/* Header */}
       <header className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
         <h1 className="text-xl font-semibold tracking-tight">
           AI Tool Assistant
@@ -15,7 +14,6 @@ export default function LandingPage() {
         </Link>
       </header>
 
-      {/* Hero Section */}
       <section className="mx-auto flex max-w-7xl flex-col items-center px-6 py-24 text-center">
         <h2 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
           Chat with AI that can
@@ -40,7 +38,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features */}
       <section className="mx-auto max-w-7xl px-6 pb-24">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <FeatureCard
@@ -58,7 +55,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">
         Built with Next.js · Drizzle · NextAuth · Vercel AI SDK
       </footer>

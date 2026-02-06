@@ -24,10 +24,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     callbacks: {
         async signIn({ user, account }) {
-            console.log("✅ SIGN IN CALLBACK (v5)", {
-                provider: account?.provider,
-                user: user,
-            });
 
             if (!user.email) return false;
 
