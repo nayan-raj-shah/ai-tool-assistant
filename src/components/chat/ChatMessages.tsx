@@ -11,7 +11,6 @@ export default function ChatMessages({
     messages: UIMessage[];
     isLoading: boolean;
 }) {
-    console.log("messages:", messages,);
     return (
         <div className="flex-1 overflow-y-auto px-28 py-4 space-y-4 bg-muted/40">
             {messages.map((msg) => {
@@ -104,7 +103,7 @@ export default function ChatMessages({
                     }
 
                     if (part.type === "tool-getF1Matches" && part.state === "output-error") {
-                        error = "Unable to fetch race data, please enter next F1 race";
+                        error = "Unable to fetch race data, please enter next Formula 1 race";
                         break;
                     }
 

@@ -6,15 +6,26 @@ import {
 import { groq } from "@ai-sdk/groq";
 import { auth } from "@/lib/auth";
 import { z } from "zod";
+import { db } from "@/db";
+import { messages as messagesTable } from "@/db/schema";
 
 export async function POST(req: Request) {
     const session = await auth();
-    if (!session) {
+    if (!session || !session.user || !session.user.id) {
         return new Response("Unauthorized", { status: 401 });
     }
 
+    const userId = session.user.id;
     const { messages } = await req.json();
     const modelMessages = await convertToModelMessages(messages);
+    const firstContent = modelMessages[modelMessages.length - 1].content[0];
+    if (typeof firstContent === "object" && "text" in firstContent) {
+        await db.insert(messagesTable).values({
+            userId: userId,
+            role: "user",
+            content: firstContent.text,
+        });
+    }
 
     const result = streamText({
         model: groq("llama-3.1-8b-instant"),
@@ -150,6 +161,27 @@ Rules:
                     }
                 },
             }),
+        },
+
+        onFinish: async (finish) => {
+            if (finish.toolResults && finish.toolResults.length > 0) {
+                const tool_data = {
+                    output: finish.toolResults[0].output,
+                    type: `tool-${finish.toolResults[0].toolName}`,
+                    state: "output-available",
+                };
+                await db.insert(messagesTable).values({
+                    userId: userId,
+                    role: "assistant",
+                    toolData: tool_data,
+                });
+            } else if (finish.text && finish.text !== "") {
+                await db.insert(messagesTable).values({
+                    userId: userId,
+                    role: "assistant",
+                    content: finish.text,
+                });
+            }
         },
     });
 

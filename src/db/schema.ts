@@ -15,15 +15,9 @@ export const users = pgTable("users", {
     updatedAt: timestamp("updatedAt").defaultNow().notNull(),
 });
 
-export const conversations = pgTable("conversations", {
-    id: uuid("id").defaultRandom().primaryKey(),
-    userId: text("user_id").notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
 export const messages = pgTable("messages", {
     id: uuid("id").defaultRandom().primaryKey(),
-    conversationId: uuid("conversation_id").notNull(),
+    userId: uuid("user_id").notNull(),
     role: text("role").notNull(),
     content: text("content"),
     toolData: jsonb("tool_data"),

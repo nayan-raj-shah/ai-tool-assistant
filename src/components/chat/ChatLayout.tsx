@@ -5,8 +5,8 @@ import { useChat } from "@ai-sdk/react";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
 
-export default function ChatLayout() {
-    const { messages, status, sendMessage } = useChat();
+export default function ChatLayout({ initialMessages = [] }: { initialMessages?: any[] }) {
+    const { messages, status, sendMessage } = useChat( { messages: initialMessages } );
 
     async function onSend(message: string) {
         await sendMessage({ text: message });

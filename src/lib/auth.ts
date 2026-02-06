@@ -43,6 +43,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     name,
                     image: user.image,
                 });
+                const newUser = await db
+                    .select()
+                    .from(users)
+                    .where(eq(users.email, user.email))
+                    .limit(1);
+                if (newUser.length > 0) {
+                    user.id = newUser[0].id;
+                }
             } else {
                 await db
                     .update(users)
@@ -52,9 +60,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         updatedAt: new Date(),
                     })
                     .where(eq(users.email, user.email));
+                user.id = existing[0].id;
             }
 
             return true;
+        },
+
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (token && session.user) {
+                session.user.id = token.id as string;
+            }
+            return session;
         },
     },
 });
