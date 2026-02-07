@@ -2,6 +2,8 @@
 
 AI-powered chat application with streaming responses and tool calling.
 
+Live Url: https://ai-tool-assistant.vercel.app/
+
 ---
 
 ## 🛠 Requirements
